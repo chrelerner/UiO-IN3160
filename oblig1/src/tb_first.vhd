@@ -70,7 +70,7 @@ begin
     wait for 2*HALF_PERIOD*18;
 
     -- Counting up
-    tb_input <= "0000"
+    tb_inp <= "0000";
     wait for 100 ns; -- Allows min signal to show 
     tb_up <= '1';
     tb_load <= '1', '0' after 100 ns;
