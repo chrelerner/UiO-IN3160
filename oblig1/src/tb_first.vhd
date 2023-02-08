@@ -29,8 +29,8 @@ architecture TESTBENCH of TEST_FIRST is
   signal tb_up        : std_logic := '1';
   signal tb_inp       : std_logic_vector(3 downto 0) := "0000";
   signal tb_count     : std_logic_vector(3 downto 0);
-  signal tb_max_count : std_logic;
-  signal tb_min_count : std_logic;
+  signal tb_max_count : std_logic := '0';
+  signal tb_min_count : std_logic := '0';
 
   -- 50 Mhz clock frequency
   constant HALF_PERIOD : time := 10 ns;
@@ -60,14 +60,22 @@ begin
   begin
     -- Counting up
     tb_reset <= '1', '0' after 100 ns;
-    wait for 2*HALF_PERIOD*16;
+    wait for 2*HALF_PERIOD*18;
+
     -- Counting down
     tb_inp <= "1111";
+    wait for 100 ns; -- Allows max signal to show
     tb_up <= '0';
     tb_load <= '1', '0' after 100 ns;
-    wait for 2*HALF_PERIOD*16;
+    wait for 2*HALF_PERIOD*18;
+
     -- Counting up
+    tb_input <= "0000"
+    wait for 100 ns; -- Allows min signal to show 
     tb_up <= '1';
+    tb_load <= '1', '0' after 100 ns;
+    wait for 2*HALF_PERIOD*18;
+
   end process;
   
 end TESTBENCH;
