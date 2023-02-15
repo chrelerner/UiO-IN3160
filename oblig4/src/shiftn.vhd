@@ -2,6 +2,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 
 entity shiftn is
+  generic (
+            n : positive := 64
+);
   port (
          -- System clock and reset.
          rst_n     : in std_logic;   -- Reset
@@ -9,11 +12,11 @@ entity shiftn is
          -- Shifted data in and out.
          din       : in std_logic;   -- Data in serial
          ser_dout  : out std_logic;  -- Data out serial
-         par_dout  : out std_logic_vector(7 downto 0)    -- Data out parallell
+         par_dout  : out std_logic_vector(n-1 downto 0)    -- Data out parallell
          );
 end shiftn;
 
-architecture structural of shift8 is
+architecture structural of shiftn is
 
 component dff is
   port (
@@ -27,18 +30,18 @@ component dff is
 end component dff;
 
 -- Signal used to connect all components. 
--- 8 bits because no output is associated to bit 0.
-signal propagate     : std_logic_vector(8 downto 0);
+-- n+1 bits because no output is associated to bit 0.
+signal propagate     : std_logic_vector(n downto 0);
 
 begin
 
-propagate(0) <= din;       -- Connects propagate to shift8 input.
-ser_dout <= propagate(8);  -- Connects propagate to shift8 output
-par_dout <= propagate(8 downto 1);     -- Connects propagate to shift8 parallell output.
+propagate(0) <= din;                -- Connects propagate to shiftn input.
+ser_dout <= propagate(n);           -- Connects propagate to shiftn output
+par_dout <= propagate(n downto 1);  -- Connects propagate to shiftn parallell output.
 
-shift8_inst: for i in 0 to 7 generate
-  shift8: dff port map 
-              (--rst_n, mclk, propagate(i), propagate(i+1));  -- positional assosiation
+shiftn_inst: for i in 0 to n-1 generate
+  shiftn: dff port map 
+              (
                 rst_n => rst_n,
                 mclk  => mclk,
                 din => propagate(i),

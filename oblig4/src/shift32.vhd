@@ -27,18 +27,18 @@ component dff is
 end component dff;
 
 -- Signal used to connect all components. 
--- 32 bits because no output is associated to bit 0.
+-- 33 bits because no output is associated to bit 0.
 signal propagate     : std_logic_vector(32 downto 0);
 
 begin
 
-propagate(0) <= din;        -- Connects propagate to shift8 input.
-ser_dout <= propagate(32);  -- Connects propagate to shift8 output
-par_dout <= propagate(32 downto 1);     -- Connects propagate to shift8 parallell output.
+propagate(0) <= din;                 -- Connects propagate to shift32 input.
+ser_dout <= propagate(32);           -- Connects propagate to shift32 output
+par_dout <= propagate(32 downto 1);  -- Connects propagate to shift32 parallell output.
 
 shift32_inst: for i in 0 to 31 generate
   shift32: dff port map 
-              (--rst_n, mclk, propagate(i), propagate(i+1));  -- positional assosiation
+              (
                 rst_n => rst_n,
                 mclk  => mclk,
                 din => propagate(i),
