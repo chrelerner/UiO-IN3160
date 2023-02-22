@@ -1,7 +1,9 @@
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
+library work;
+use work.subprog_pck.all;
 
 entity tb_pargen is
   generic (
@@ -43,130 +45,21 @@ begin
     );    
     
   P_CLK_0: process
+    -- Variable used to increment indata2 with 13 each clock cycle.
     variable increment : unsigned(TB_WIDTH-1 downto 0);
   begin
     mclk <= '0';
     wait for 50 ns;
     mclk <= '1';
     wait for 50 ns;
-    increment := indata2 + x"000D";  -- Incrementing with 13
+    increment := indata2 + x"000D";  -- Incrementing with 13.
     indata2 <= increment;
   end process P_CLK_0;
 
   TEST: process
-    procedure test_values(signal par: in std_logic) is
-    begin
-      -- Testing with values of indata2 incrementing by 13 from x0000 and up.
-      -- Make sense of comments: toggle_parity xor xor_parity with indata2 = XXXX
-
-      -- Testing values indata1 = 0001
-      wait for 60 ns;  -- We want to match the clock.
-      assert (par = '0')  -- 1 xor 0 with indata2 = 0000, but rst_n is 0!
-       report "Parity not correct at simulation start"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '0')  -- 1 xor 1 with indata2 = 000D
-       report "Parity not correct after 100 ns"
-       severity warning;
-
-      wait for 100 ns;  -- 1 xor 1 with indata2 = 001A
-      assert (par = '0')
-       report "Parity not correct after 200 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '1')  -- 1 xor 0 with indata2 = 0027
-       report "Parity not correct after 300 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '0')  -- 1 xor 1 with indata2 = 0034
-       report "Parity not correct after 400 ns"
-       severity warning;
-
-      -- Testing values indata1 = 0003
-      wait for 100 ns;  -- 0 xor 0 with indata2 = 0041
-      assert (par = '0')
-       report "Parity not correct after 500 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '0')  -- 0 xor 0 with indata2 = 004E
-       report "Parity not correct after 600 ns"
-       severity warning;
-
-      wait for 100 ns;  -- 0 xor 1 with indata2 = 005B
-      assert (par = '1')
-       report "Parity not correct after 700 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '1')  -- 0 xor 1 with indata2 = 0068
-       report "Parity not correct after 800 ns"
-       severity warning;
-
-      -- Testing values indata = 0004
-      wait for 100 ns;
-      assert (par = '0')  -- 1 xor 1 with indata2 = 0075
-       report "Parity not correct after 900 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '1')  -- 1 xor 0 with indata2 = 0082
-       report "Parity not correct after 1000 ns"
-       severity warning;
-
-      wait for 100 ns;  -- 1 xor 1 with indata2 = 008F
-      assert (par = '0')
-       report "Parity not correct after 1100 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '1')  -- 1 xor 0 with indata2 = 009C
-       report "Parity not correct after 1200 ns"
-       severity warning;
-
-      -- Testing values indata = 0005
-      wait for 100 ns;
-      assert (par = '0')  -- 0 xor 0 with indata2 = 00A9
-       report "Parity not correct after 1300 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '1')  -- 0 xor 1 with indata2 = 00B6
-       report "Parity not correct after 1400 ns"
-       severity warning;
-
-      wait for 100 ns;  -- 0 xor 0 with indata2 = 00C3
-      assert (par = '0')
-       report "Parity not correct after 1500 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '1')  -- 0 xor 1 with indata2 = 00D0
-       report "Parity not correct after 1600 ns"
-       severity warning;
-
-      -- Testing values indata = 0007
-      wait for 100 ns;
-      assert (par = '1')  -- 1 xor 0 with indata2 = 00DD
-       report "Parity not correct after 1700 ns"
-       severity warning;
-
-      wait for 100 ns;
-      assert (par = '0')  -- 1 xor 1 with indata2 = 00EA
-       report "Parity not correct after 1800 ns"
-       severity warning;
-
-      wait for 100 ns;  -- 1 xor 1 with indata2 = 00F7
-      assert (par = '0')
-       report "Parity not correct after 1900 ns"
-       severity warning;
-      
-    end procedure;
   begin
-    test_values(par);
+    test_values(par);  -- Test-procedure from package.
+    wait;              -- Permanently halts the assertions.
   end process TEST;
 
 
