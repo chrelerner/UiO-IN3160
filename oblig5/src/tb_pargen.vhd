@@ -31,7 +31,7 @@ architecture beh1 of tb_pargen is
   signal mclk    : std_logic;
   signal indata1 : std_logic_vector(TB_WIDTH-1 downto 0);
   signal indata2 : unsigned(TB_WIDTH-1 downto 0);
-  signal par     : std_logic  := '0';  -- Had to give default value for it to show in the waveform
+  signal par     : std_logic;
   
 begin
 
@@ -57,8 +57,6 @@ begin
   rst_n  <= '0', '1' after 100 ns;
   indata1 <= x"0001",
              x"0003" after 500 ns,
-             x"0004" after 900 ns,
-             x"0005" after 1300 ns,
-             x"0007" after 1700 ns;
+             x"0004" after 900 ns;
 
 end beh1;

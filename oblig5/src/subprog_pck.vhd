@@ -32,11 +32,12 @@ package body subprog_pck is
 
   procedure test_values(
     signal mclk: in std_logic;
-    signal indata2: out unsigned) is
+    signal indata2: out unsigned
+  ) is
   begin
     increment_loop: for i in 0 to 255 loop
       wait until rising_edge(mclk);
-      indata2 <= to_unsigned(i, indata2'length) when rising_edge(mclk);
+      indata2 <= to_unsigned(i, indata2'length);
     end loop increment_loop;
   end;
   
