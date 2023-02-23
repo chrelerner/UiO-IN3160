@@ -30,7 +30,7 @@ architecture beh1 of tb_pargen is
   signal rst_n   : std_logic;
   signal mclk    : std_logic;
   signal indata1 : std_logic_vector(TB_WIDTH-1 downto 0);
-  signal indata2 : unsigned(TB_WIDTH-1 downto 0) := x"0000";
+  signal indata2 : unsigned(TB_WIDTH-1 downto 0);
   signal par     : std_logic  := '0';  -- Had to give default value for it to show in the waveform
   
 begin
@@ -45,24 +45,15 @@ begin
     );    
     
   P_CLK_0: process
-    -- Variable used to increment indata2 with 13 each clock cycle.
-    variable increment : unsigned(TB_WIDTH-1 downto 0);
   begin
     mclk <= '0';
     wait for 50 ns;
     mclk <= '1';
     wait for 50 ns;
-    increment := indata2 + x"000D";  -- Incrementing with 13.
-    indata2 <= increment;
   end process P_CLK_0;
 
-  TEST: process
-  begin
-    test_values(par);  -- Test-procedure from package.
-    wait;              -- Permanently halts the assertions.
-  end process TEST;
-
-
+  test_values(mclk, indata2);  -- Test-procedure from package.
+   
   rst_n  <= '0', '1' after 100 ns;
   indata1 <= x"0001",
              x"0003" after 500 ns,
