@@ -11,21 +11,19 @@ entity seg7ctrl is
          abcdefg  : out std_logic_vector(6 downto 0);  
          c        : out std_logic
          );
-end entity seg7ctrl
+end entity seg7ctrl;
 
-architecture mixed of segtctrl is
+architecture mixed of seg7ctrl is
 
   component bin2ssd is
     port (
-           d0       : in std_logic_vector(4 downto 0);  -- Binary 5-bit input.
-           d1       : in std_logic_vector(4 downto 0);  -- Binary 5-bit input.
-           abcdefg0 : out std_logic_vector(6 downto 0);  -- Seven segment output
-           abcdefg1 : out std_logic_vector(6 downto 0)   -- Seven segment output
+           d       : in std_logic_vector(4 downto 0);  -- Binary 5-bit input.
+           abcdefg : out std_logic_vector(6 downto 0)  -- Seven segment output
            );
   end component bin2ssd;
 
-  signal counter : unsigned(18 downto 0) := x"00000";  -- Singal able to count to 524 287.
-  signal switch  : std_logic;  -- Used to change between digits.
+  signal counter : unsigned(19 downto 0) := x"00000";  -- Singal able to count to 524 287.
+  signal switch  : std_logic := '0';  -- Used to change between digits.
   signal output0 : std_logic_vector(6 downto 0);
   signal output1 : std_logic_vector(6 downto 0);
 
@@ -33,16 +31,20 @@ begin
 
   DECODER_0: bin2ssd
     port map (
-               d0 => d0,
-               d1 => d1,
-               abcdefg0 => output0,
-               abcdefg1 => output1
+               d => d0,
+               abcdefg => output0
+               );
+
+  DECODER_1: bin2ssd
+    port map (
+               d => d1,
+               abcdefg => output1
                );
 
   -- Switching the digit displayed by means of a counter.
   SWITCHING:
   process (mclk, reset)
-    variable increment     : unsigned(18 downto 0);
+    variable increment     : unsigned(19 downto 0);
     variable change_switch : std_logic;
   begin
     if (reset = '1') then
@@ -63,8 +65,8 @@ begin
   process (mclk, reset)
   begin
     if (reset = '1') then
-      abcdefg <= "00000";  -- Reset default value
-    elsif rising_edge(clk) then
+      abcdefg <= "0000000";  -- Reset default value
+    elsif rising_edge(mclk) then
       abcdefg <= output0 when (switch = '0') else output1;
     end if;
   end process DISPLAYING;
