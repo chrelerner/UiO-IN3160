@@ -22,26 +22,23 @@ architecture mixed of seg7ctrl is
            );
   end component bin2ssd;
 
-  signal counter : unsigned(19 downto 0) := x"00000";  -- Singal able to count to 524 287.
-  signal switch  : std_logic := '0';  -- Used to change between digits.
-  signal output0 : std_logic_vector(6 downto 0);
-  signal output1 : std_logic_vector(6 downto 0);
+  -- Signals used to switch digits.
+  signal counter : unsigned(19 downto 0) := x"00000";  -- Can to count to 524 287.
+  signal switch  : std_logic := '0';
+
+  -- Signals used by the decoder.
+  signal output : std_logic_vector(6 downto 0);
+  signal d : std_logic_vector(4 downto 0);
 
 begin
 
-  DECODER_0: bin2ssd
+  DECODER: bin2ssd
     port map (
-               d => d0,
-               abcdefg => output0
+               d => d,
+               abcdefg => output
                );
 
-  DECODER_1: bin2ssd
-    port map (
-               d => d1,
-               abcdefg => output1
-               );
-
-  -- Switching the digit displayed by means of a counter.
+  -- Switching the digit displayed by using a counter.
   SWITCHING:
   process (mclk, reset)
     variable increment     : unsigned(19 downto 0);
@@ -60,17 +57,18 @@ begin
     end if;
   end process SWITCHING;
 
-  -- Displaying the digit by means of the switch signal.
+  -- Displaying the digit.
   DISPLAYING:
   process (mclk, reset)
   begin
     if (reset = '1') then
       abcdefg <= "0000000";  -- Reset default value
     elsif rising_edge(mclk) then
-      abcdefg <= output0 when (switch = '0') else output1;
+      abcdefg <= output;
     end if;
   end process DISPLAYING;
 
+  d <= d1 when (switch = '1') else d0;
   c <= switch;
 
 end mixed;
