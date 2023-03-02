@@ -53,7 +53,7 @@ begin
   process
   begin
     tb_c <= '0';
-    wait for 50 ns;
+    wait for 100 ns;
     tb_c <= '1';
     wait for 100 ns;
   end process SWITCHING;
@@ -62,10 +62,11 @@ begin
   process
     variable test_vector : unsigned(4 downto 0);
   begin
-    increment_loop: for i in 0 to 15 loop
+    increment_loop: for i in 0 to 31 loop
       wait for 10 ns;
       test_vector := to_unsigned(i, test_vector'length);
       tb_d <= std_logic_vector(test_vector);
+      --report "Testing for vector: " & integer'image(i) & " tb_d: " & integer'image(to_integer(unsigned(tb_d))) & " tb_disp0: " & integer'image(to_integer(unsigned(tb_disp0)));
     end loop;
   end process STIMULI;
   
