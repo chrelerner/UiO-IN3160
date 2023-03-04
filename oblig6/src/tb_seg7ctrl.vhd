@@ -18,10 +18,26 @@ architecture testbench of tb_seg7ctrl is
          );
   end component seg7ctrl;
 
+  component seg7model is
+    port (
+           c         : in  std_logic;
+           abcdefg   : in  std_logic_vector(6 downto 0);
+           disp1     : out std_logic_vector(4 downto 0);
+           disp0     : out std_logic_vector(4 downto 0)
+           );
+  end component seg7model;
+
+  -- Signals for seg7ctrl
   signal tb_mclk    : std_logic;
   signal tb_reset   : std_logic;
   signal tb_d0      : std_logic_vector(4 downto 0);
   signal tb_d1      : std_logic_vector(4 downto 0);
+
+  -- Signals for seg7model
+  signal tb_disp1   : std_logic_vector(4 downto 0);
+  signal tb_disp0   : std_logic_vector(4 downto 0);
+
+  -- Signals used to connect the two
   signal tb_abcdefg : std_logic_vector(6 downto 0);
   signal tb_c       : std_logic;
 
@@ -37,6 +53,13 @@ begin
                c       => tb_c
                );
 
+  UUT_2: seg7model
+    port map (
+               c => tb_c,
+               abcdefg => tb_abcdefg,
+               disp1 => tb_disp1,
+               disp0 => tb_disp0
+               );
 
   CLOCK_stimuli:
   process
