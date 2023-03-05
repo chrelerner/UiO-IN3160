@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity selftest_seg7ctrl
+entity selftest_seg7ctrl is
   generic (
               data_width : natural := 5;  -- 5 bit input
               addr_width : natural := 4   -- 16 rows of inputs.
@@ -23,7 +23,7 @@ architecture rtl of selftest_seg7ctrl is
               addr_width : natural := 4   -- 16 rows of inputs.
               );
     port (
-           addr : in std_logic_vector(addr_width-1 downto 0);
+           address : in std_logic_vector(addr_width-1 downto 0);
            data : out std_logic_vector((data_width*2)-1 downto 0)
            );
   end component rom;
@@ -32,14 +32,14 @@ architecture rtl of selftest_seg7ctrl is
   signal second_tick : std_logic;
 
   -- Signals to connect rom
-  signal addr : std_logic_vector(addr_width-1 downto 0) := (others => '0');
-  signal data : std_logic_vector((data_width*2)-1 downto 0)  -- Two inputs per row
+  signal address : std_logic_vector(addr_width-1 downto 0) := (others => '0');
+  signal data : std_logic_vector((data_width*2)-1 downto 0);  -- Two inputs per row
 
 begin
 
-  ROM:rom
+  TABLE: rom
     port map (
-               addr => addr,
+               address => address,
                data => data
                );
 
@@ -51,7 +51,7 @@ begin
   begin
     if (reset = '1') then
       counter <= (others => '0');
-      second_tick <= '0'
+      second_tick <= '0';
     elsif rising_edge(mclk) then
       -- Incrementing the counter, or resetting to 0 when it is 99 999 999 (x5F5E0FF).
       increment := (others => '0') when (counter = "101111101011110000011111111") else counter + '1';
@@ -65,13 +65,13 @@ begin
   process(all)
     variable increment : unsigned(addr_width-1 downto 0);
   begin
-    if (reset = '1') then
-      addr <= (others => '0');
-    else then
-      increment := addr;
-      addr <= (others => '0') when ((second_tick = '1') and (increment = "1111")),  -- Message starts over.
-                increment + '1' when (second_tick = '1'),  -- Next address.
-                else increment;  -- Second tick is 0.
+    increment := unsigned(address);
+    if ((reset = '1') or ((second_tick = '1') and (increment = "1111"))) then
+      address <= (others => '0');                   -- Message starts over.
+    elsif (second_tick = '1') then
+      address <= std_logic_vector(increment + '1');  -- Next address.
+    else
+      address <= std_logic_vector(increment);       -- Second tick is 0.
     end if;
   end process UPDATING_ADDRESS;
 

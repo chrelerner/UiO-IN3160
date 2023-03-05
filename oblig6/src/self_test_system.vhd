@@ -6,7 +6,7 @@ entity self_test_system is
         mclk    : in std_logic;
         reset   : in std_logic;
         abcdefg : out std_logic_vector(6 downto 0);
-        c       : out std_logic;
+        c       : out std_logic
         );
 end self_test_system;
 
@@ -34,10 +34,10 @@ architecture structural of self_test_system is
              d0    : out std_logic_vector(4 downto 0);
              d1    : out std_logic_vector(4 downto 0)
              );
-  end selftest_seg7ctrl;
+  end component selftest_seg7ctrl;
 
-  signal d0    : out std_logic_vector(4 downto 0);
-  signal d1    : out std_logic_vector(4 downto 0);
+  signal d0    : std_logic_vector(4 downto 0);
+  signal d1    : std_logic_vector(4 downto 0);
 
 begin
 
@@ -51,7 +51,7 @@ begin
                c => c
                );
 
-  COMPONENT_2: selfttest_seg7ctrl is
+  COMPONENT_2: selftest_seg7ctrl
     port map(
               mclk => mclk,
               reset => reset,

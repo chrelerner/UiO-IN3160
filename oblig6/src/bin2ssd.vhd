@@ -31,8 +31,8 @@ begin
     "1000111" when "01111",  -- F
     -- Input x10 - x17
     "0000000" when "10000",  -- <blank>
-    "0011110" when "10001",  -- checkmark J
-    "0111100" when "10010",  -- checkmark L
+    "0011110" when "10001",  -- checkmark L
+    "0111100" when "10010",  -- checkmark J
     "1001111" when "10011",  -- E
     "0001110" when "10100",  -- L
     "0111101" when "10101",  -- d
