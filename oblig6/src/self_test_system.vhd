@@ -38,6 +38,8 @@ architecture structural of self_test_system is
 
   signal d0    : std_logic_vector(4 downto 0);
   signal d1    : std_logic_vector(4 downto 0);
+  signal abcdefg_out : std_logic_vector(6 downto 0);
+  signal c_out : std_logic;
 
 begin
 
@@ -47,8 +49,8 @@ begin
                reset => reset,
                d0 => d0,
                d1 => d1,
-               abcdefg => abcdefg,
-               c => c
+               abcdefg => abcdefg_out,
+               c => c_out
                );
 
   COMPONENT_2: selftest_seg7ctrl
@@ -59,6 +61,9 @@ begin
               d1 => d1
               );
   
+  abcdefg <= abcdefg_out;
+  c <= c_out;
+
 end architecture structural;
 
 

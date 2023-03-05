@@ -19,6 +19,7 @@ architecture rtl of rom is
   type memory_array is array((2**addr_width)-1 downto 0) of
     std_logic_vector((data_width*2)-1 downto 0);
 
+  -- Got this idea of making ROM from steemit.com
   constant ROM_DATA : memory_array := -- Well done you are good
   (
     "1000110010", -- 11 12  -> checkmark checkmark (W)

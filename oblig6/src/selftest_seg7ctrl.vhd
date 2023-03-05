@@ -56,27 +56,41 @@ begin
       -- Incrementing the counter, or resetting to 0 when it is 99 999 999 (x5F5E0FF).
       increment := (others => '0') when (counter = "101111101011110000011111111") else counter + '1';
       counter <= increment;
-      -- Setting second_tick to 1 for exactly one clock period. The first "second_tick" will appear on the one second mark.
+      -- Setting second_tick to 1 for exactly one clock period.
       second_tick <= '1' when (increment = "101111101011110000011111111") else '0';
     end if;
   end process SECOND_TICK_GENERATOR;
 
+  --UPDATING_ADDRESS:
+  --process(all)
+  --  variable increment : unsigned(addr_width-1 downto 0);
+  --begin
+  --  increment := unsigned(address);
+  --  if ((reset = '1') or ((second_tick = '1') and (increment = "1111"))) then
+  --    address <= (others => '0');                   -- Message starts over.
+  --  elsif (second_tick = '1') then
+  --    address <= std_logic_vector(increment + '1');  -- Next address.
+  --  else
+  --    address <= std_logic_vector(increment);       -- Second tick is 0.
+  --  end if;
+  --end process UPDATING_ADDRESS;
+
   UPDATING_ADDRESS:
-  process(all)
+  process(mclk, reset)
     variable increment : unsigned(addr_width-1 downto 0);
   begin
-    increment := unsigned(address);
-    if ((reset = '1') or ((second_tick = '1') and (increment = "1111"))) then
-      address <= (others => '0');                   -- Message starts over.
-    elsif (second_tick = '1') then
-      address <= std_logic_vector(increment + '1');  -- Next address.
-    else
-      address <= std_logic_vector(increment);       -- Second tick is 0.
+    if (reset = '1') then
+      address <= (others => '0');
+    elsif rising_edge(mclk) then
+      increment := unsigned(address);
+      address <= (others => '0') when ((second_tick = '1') and (increment = "1111")) else
+                 std_logic_vector(increment + '1') when (second_tick = '1') else
+                 std_logic_vector(increment);
     end if;
   end process UPDATING_ADDRESS;
 
   -- Sending data on the rising edge of the clock.
-  d0 <= data((data_width*2)-1 downto data_width) when rising_Edge(mclk);
-  d1 <= data(data_width-1 downto data_width) when rising_Edge(mclk);
+  d1 <= data((data_width*2)-1 downto data_width);
+  d0 <= data(data_width-1 downto 0);
 
 end architecture rtl;
