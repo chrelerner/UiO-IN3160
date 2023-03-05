@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use IEEE.numeric_std.all;
+use ieee.numeric_std.all;
 
 entity tb_seg7ctrl is
 end tb_seg7ctrl;
@@ -43,7 +43,7 @@ architecture testbench of tb_seg7ctrl is
 
 begin
 
-  UUT: seg7ctrl
+  UUT_1: seg7ctrl
     port map (
                mclk    => tb_mclk,
                reset   => tb_reset,
@@ -77,7 +77,7 @@ begin
     looping: for i in 0 to 31 loop
       test_vector0 := to_unsigned(i, test_vector0'length);
       tb_d0 <= std_logic_vector(test_vector0);
-      wait for 2 us;
+      wait for 4 us;
     end loop;
   end process VECTOR0_stimuli;
 
@@ -88,14 +88,13 @@ begin
     looping: for i in 31 downto 0 loop
       test_vector1 := to_unsigned(i, test_vector1'length);
       tb_d1 <= std_logic_vector(test_vector1);
-      wait for 2 us;
+      wait for 4 us;
     end loop;
   end process VECTOR1_stimuli;
 
-  tb_reset <= '1',
-              '0' after 4 us,
-              '1' after 8 us,
-              '0' after 10 us;
+  tb_reset <= '0',
+              '1' after 4 us,
+              '0' after 8 us;
 
 end architecture testbench;
 

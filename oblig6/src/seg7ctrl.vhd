@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use IEEE.numeric_std.all;
+use ieee.numeric_std.all;
 
 entity seg7ctrl is
   port (
@@ -23,7 +23,7 @@ architecture mixed of seg7ctrl is
   end component bin2ssd;
 
   -- Signals used to switch digits.
-  signal counter : unsigned(18 downto 0);  -- Can count to 524 287.
+  signal counter : unsigned(18 downto 0) := (others => '0');  -- Can count to 524 287.
   signal switch  : std_logic := '0';
 
   -- Signals used by the decoder.
