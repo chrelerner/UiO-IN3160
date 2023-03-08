@@ -16,7 +16,7 @@ entity rom is
 end rom;
 
 architecture rtl of rom is
-  type memory_array is array((2**addr_width)-1 downto 0) of
+  type memory_array is array(0 to (2**addr_width)-1) of
     std_logic_vector((data_width*2)-1 downto 0);
 
   -- Got this idea of making ROM from steemit.com
@@ -25,7 +25,7 @@ architecture rtl of rom is
     "1000110010", -- 11 12  -> checkmark checkmark (W)
     "1001110100", -- 13 14  -> E L
     "1010010000", -- 14 10  -> L BLANK
-    "1010110110", -- 10 10  -> BLANK BLANK
+    "1000010000", -- 10 10  -> BLANK BLANK
     "1010110110", -- 15 16  -> d o
     "1011110011", -- 17 13  -> n E
     "1000010000", -- 10 10  -> BLANK BLANK
