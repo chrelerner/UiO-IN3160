@@ -23,7 +23,7 @@ architecture structural of self_test_system is
          );
   end component seg7ctrl;
 
-  component selftest_seg7ctrl is
+  component self_test_unit is
       generic (
               data_width : natural := 5;  -- 5 bit input
               addr_width : natural := 4   -- 16 rows of inputs.
@@ -34,7 +34,7 @@ architecture structural of self_test_system is
              d0    : out std_logic_vector(4 downto 0);
              d1    : out std_logic_vector(4 downto 0)
              );
-  end component selftest_seg7ctrl;
+  end component self_test_unit;
 
   signal d0    : std_logic_vector(4 downto 0);
   signal d1    : std_logic_vector(4 downto 0);
@@ -53,7 +53,7 @@ begin
                c => c_out
                );
 
-  COMPONENT_2: selftest_seg7ctrl
+  COMPONENT_2: self_test_unit
     port map(
               mclk => mclk,
               reset => reset,

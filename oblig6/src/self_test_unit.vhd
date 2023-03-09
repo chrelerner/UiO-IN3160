@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity selftest_seg7ctrl is
+entity self_test_unit is
   generic (
               addr_width : natural := 4;   -- 16 rows of inputs.
               data_width : natural := 5    -- 5 bit input
@@ -13,9 +13,9 @@ entity selftest_seg7ctrl is
          d0    : out std_logic_vector(4 downto 0);
          d1    : out std_logic_vector(4 downto 0)
          );
-end selftest_seg7ctrl;
+end self_test_unit;
 
-architecture rtl of selftest_seg7ctrl is
+architecture rtl of self_test_unit is
 
   component rom is
     generic (

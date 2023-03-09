@@ -11,7 +11,7 @@ entity seg7ctrl is
          abcdefg  : out std_logic_vector(6 downto 0);  
          c        : out std_logic
          );
-end entity seg7ctrl;
+end seg7ctrl;
 
 architecture mixed of seg7ctrl is
 

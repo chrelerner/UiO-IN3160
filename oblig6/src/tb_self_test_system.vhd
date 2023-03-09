@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity tb_self_test_system is
-end entity;
+end tb_self_test_system;
 
 architecture self_testing_testbench of tb_self_test_system is
   
