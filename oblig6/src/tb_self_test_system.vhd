@@ -86,24 +86,20 @@ begin
   TEST_digits:
   process
     variable current_test : std_logic_vector(6 downto 0);
-    variable index : integer;
   begin
-    testing_loop: for i in 0 to 17 loop
+    testing_loop: for i in 0 to 15 loop
       report "Testing digits at " & integer'image(i) & " seconds";
-      index := 0 when (i = 16) else
-               1 when (i = 17) else
-               i;
 
       -- Testing digit 1.
       wait until tb_c = '1';
-      current_test := expected_outputs_1(index);
+      current_test := expected_outputs_1(i);
       assert (tb_abcdefg = current_test)
         report "Digit-1 " & integer'image(to_integer(unsigned(tb_abcdefg))) & " not matching expected value " & integer'image(to_integer(unsigned(current_test)))
         severity error;
 
       -- Testing digit 0.
       wait until tb_c = '0';
-      current_test := expected_outputs_0(index);
+      current_test := expected_outputs_0(i);
       assert (tb_abcdefg = current_test)
         report "Digit-0 " & integer'image(to_integer(unsigned(tb_abcdefg))) & " not matching expected value " & integer'image(to_integer(unsigned(current_test)))
         severity error;

@@ -6,8 +6,8 @@ use ieee.numeric_std.all;
 
 entity rom is
   generic (
-              data_width : natural := 5;  -- 5 bit input
-              addr_width : natural := 4   -- 16 rows of inputs.
+              addr_width : natural := 4;   -- 16 rows of inputs.
+              data_width : natural := 5    -- 5 bit input
               );
   port (
          address : in std_logic_vector(addr_width-1 downto 0);

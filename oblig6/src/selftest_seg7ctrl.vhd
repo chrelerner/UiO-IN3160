@@ -4,8 +4,8 @@ use ieee.numeric_std.all;
 
 entity selftest_seg7ctrl is
   generic (
-              data_width : natural := 5;  -- 5 bit input
-              addr_width : natural := 4   -- 16 rows of inputs.
+              addr_width : natural := 4;   -- 16 rows of inputs.
+              data_width : natural := 5    -- 5 bit input
               );
   port (
          mclk  : in std_logic;
@@ -19,8 +19,8 @@ architecture rtl of selftest_seg7ctrl is
 
   component rom is
     generic (
-              data_width : natural := 5;  -- 5 bit input
-              addr_width : natural := 4   -- 16 rows of inputs.
+              addr_width : natural := 4;   -- 16 rows of inputs.
+              data_width : natural := 5    -- 5 bit input
               );
     port (
            address : in std_logic_vector(addr_width-1 downto 0);
@@ -61,20 +61,6 @@ begin
     end if;
   end process SECOND_TICK_GENERATOR;
 
-  --UPDATING_ADDRESS:
-  --process(all)
-  --  variable increment : unsigned(addr_width-1 downto 0);
-  --begin
-  --  increment := unsigned(address);
-  --  if ((reset = '1') or ((second_tick = '1') and (increment = "1111"))) then
-  --    address <= (others => '0');                   -- Message starts over.
-  --  elsif (second_tick = '1') then
-  --    address <= std_logic_vector(increment + '1');  -- Next address.
-  --  else
-  --    address <= std_logic_vector(increment);       -- Second tick is 0.
-  --  end if;
-  --end process UPDATING_ADDRESS;
-
   UPDATING_ADDRESS:
   process(mclk, reset)
     variable increment : unsigned(addr_width-1 downto 0);
@@ -89,7 +75,7 @@ begin
     end if;
   end process UPDATING_ADDRESS;
 
-  -- Sending data on the rising edge of the clock.
+  -- Sending data that is updated on the rising edge of the clock.
   d1 <= data((data_width*2)-1 downto data_width);
   d0 <= data(data_width-1 downto 0);
 
