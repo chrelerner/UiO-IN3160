@@ -35,6 +35,9 @@ architecture rtl of selftest_seg7ctrl is
   signal address : std_logic_vector(addr_width-1 downto 0) := (others => '0');
   signal data : std_logic_vector((data_width*2)-1 downto 0);  -- Two inputs per row
 
+  -- Signal to connect to d0 and d1 outputs
+  signal data_out : std_logic_vector((data_width*2)-1 downto 0);  -- Two inputs per row
+
 begin
 
   TABLE: rom
@@ -75,8 +78,18 @@ begin
     end if;
   end process UPDATING_ADDRESS;
 
+  UPDATING_DATA:
+  process(mclk, reset)
+  begin
+    if (reset = '1') then
+      data_out <= (others => '0');
+    elsif rising_edge(mclk) then
+      data_out <= data;
+    end if;
+  end process UPDATING_DATA;
+
   -- Sending data that is updated on the rising edge of the clock.
-  d1 <= data((data_width*2)-1 downto data_width);
-  d0 <= data(data_width-1 downto 0);
+  d1 <= data_out((data_width*2)-1 downto data_width);
+  d0 <= data_out(data_width-1 downto 0);
 
 end architecture rtl;

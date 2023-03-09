@@ -104,10 +104,7 @@ begin
         report "Digit-0 " & integer'image(to_integer(unsigned(tb_abcdefg))) & " not matching expected value " & integer'image(to_integer(unsigned(current_test)))
         severity error;
       
-      -- Will wait for one second as long as there are more outpus to inspect.
-      if (i /= 17) then
-        wait for 1 sec;
-      end if;
+      wait for 1 sec;
     end loop;
   end process TEST_digits;
 
