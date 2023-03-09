@@ -1,45 +1,44 @@
-# vsim work.tb_self_test_system 
-# Start time: 14:02:41 on Mar 09,2023
-# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# vsim work.tb_self_test_unit 
+# Start time: 15:09:41 on Mar 09,2023
+# ** Note: (vsim-3812) Design is being optimized...
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
 # Loading ieee.numeric_std(body)
-# Loading work.tb_self_test_system(self_testing_testbench)#1
+# Loading work.tb_self_test_unit(self_testing_testbench)#1
 # ** Note: Testing digits at 0 seconds
-#    Time: 0 fs  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 50 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 1 seconds
-#    Time: 1010000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 1000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 2 seconds
-#    Time: 2020000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 2000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 3 seconds
-#    Time: 3030000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 3000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 4 seconds
-#    Time: 4040000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 4000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 5 seconds
-#    Time: 5050000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 5000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 6 seconds
-#    Time: 6060000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 6000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 7 seconds
-#    Time: 7070000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 7000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 8 seconds
-#    Time: 8080000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 8000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 9 seconds
-#    Time: 9090000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 9000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 10 seconds
-#    Time: 10100000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 10000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 11 seconds
-#    Time: 11110000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 11000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 12 seconds
-#    Time: 12120000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 12000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 13 seconds
-#    Time: 13130000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 13000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 14 seconds
-#    Time: 14140000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 14000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 15 seconds
-#    Time: 15150000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 15000000050 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 0 seconds
-#    Time: 16160000005 ns  Iteration: 0  Instance: /tb_self_test_system
+#    Time: 16000000100 ns  Iteration: 0  Instance: /tb_self_test_unit
 # ** Note: Testing digits at 1 seconds
-#    Time: 17170000005 ns  Iteration: 0  Instance: /tb_self_test_system
-
+#    Time: 17000000100 ns  Iteration: 0  Instance: /tb_self_test_unit
