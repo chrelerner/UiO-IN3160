@@ -1,0 +1,10 @@
+Since the clock has a frequenzy of 100 MHz, it means that
+100 million clock periods will happen every second.
+
+If we want a digit flicker of 100Hz, we must have a
+digit-period that lasts 1 000 000 clock periods, which
+will result in 100 digit-periods in 1 second.
+
+This is 500 000 rising edges between off/on for one digit.
+That means we must be able to count up to 499 999 (from 0),
+and we therefore require 19 bits for the counter.
