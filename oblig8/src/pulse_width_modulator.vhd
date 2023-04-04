@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity pwm_module is
+entity pulse_width_modulator is
   port (
          mclk       : in std_logic;
          reset      : in std_logic;
@@ -10,36 +10,89 @@ entity pwm_module is
          dir        : out std_logic;
          en         : out std_logic
          );
-end pwm module;
+end pulse_width_modulator;
 
-architecture rtl of pwm_module is
+architecture rtl of pulse_width_modulator is
   type state_type is (forward_idle, forward, reverse_idle, reverse);
   signal current_state, next_state : state_type;
 
+  signal reset_handler : std_logic := '0';
+
   -- Signals used for pulse-width modulation.
   signal pwm : std_logic;
-  signal counter : std_logic_vector(10 downto 0) := (others => '0');
-  signal duty_cycle_signed : signed(7 downto 0) := signed(duty_cycle);
+  signal counter : unsigned(15 downto 0) := (others => '0'); -- Counts to 49 999;
 
 begin
 
   PULSE_WIDTH_MODULATION:
-  process is
+  process (mclk, reset) is
+    variable increment : unsigned(15 downto 0);
+    variable period_high_check : unsigned(15 downto 0);
   begin
+    if (reset = '1') then
+      counter <= (others => '0');
+    elsif rising_edge(mclk) then
+      increment := (others => '0') when (counter = "1100001101001111") else counter + '1';
+      counter <= increment;
+
+      -- Has a max value of 49 999, min value of 480, and absolute min value of 0.
+      period_high_check := unsigned(((abs(signed(duty_cycle)) * 393) + 88)) when (abs(signed(duty_cycle)) > "00000000") else
+                           (others => '0');
+      pwm <= '1' when (increment < period_high_check) else '0';
+    end if;
   end process PULSE_WIDTH_MODULATION;
 
-  current_state <=
-    reverse_idle when reset else
-    next_state when riging_edge(mclk);
+  current_state <= next_state;
 
-  NEXT_STATE:
-  process is
+  UPDATE_STATE:
+  process (mclk, reset) is
   begin
-  end process NEXT_STATE;
+    if (reset = '1' or reset_handler = '1') then
+      reset_handler <= '1' when (current_state = forward) else '0';
+      next_state <= forward_idle when (current_state = forward) else reverse_idle;
+    elsif rising_edge(mclk) then
+        -- Default value
+        next_state <= current_state;
+        case current_state is
+          when reverse_idle =>
+            next_state <= reverse when (signed(duty_cycle) < "00000000") else forward_idle;
+          when reverse =>
+            next_state <= current_state when (signed(duty_cycle) < "00000000") else reverse_idle;
+          when forward_idle =>
+            next_state <= forward when (signed(duty_cycle) > "00000000") else reverse_idle;
+          when forward =>
+            next_state <= current_state when (signed(duty_cycle) > "00000000") else forward_idle;
+        end case;
+    end if;
+  end process UPDATE_STATE;
 
   STATE_OUTPUT:
-  process is
+  process (mclk, reset) is
+    variable direction : std_logic;
   begin
+    if (reset = '1') then
+      en <= '0';
+    elsif rising_edge(mclk) then
+      
+      -- Default values
+      direction := dir;
+      dir <= direction;  -- Hinders short
+      en <= '0';
+      case current_state is
+        when reverse_idle =>
+          en <= '0';
+          dir <= '0';
+        when reverse =>
+          en <= pwm;
+          dir <= '0';
+        when forward_idle =>
+          en <= '0';
+          dir <= '1';
+        when forward =>
+          en <= pwm;
+          dir <= '1';
+      end case;
+    end if;
   end process STATE_OUTPUT;
 
 end architecture rtl;
