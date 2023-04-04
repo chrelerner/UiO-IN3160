@@ -27,53 +27,54 @@ begin
   PULSE_WIDTH_MODULATION:
   process (mclk, reset) is
     variable increment : unsigned(15 downto 0);
-    variable period_high_check : unsigned(15 downto 0);
+    variable period_high_check : unsigned(16 downto 0);
   begin
     if (reset = '1') then
       counter <= (others => '0');
     elsif rising_edge(mclk) then
-      increment := (others => '0') when (counter = "1100001101001111") else counter + '1';
+      increment := (others => '0') when (counter = d"49999") else counter + '1';
       counter <= increment;
 
       -- Has a max value of 49 999, min value of 480, and absolute min value of 0.
-      period_high_check := unsigned(((abs(signed(duty_cycle)) * 393) + 88)) when (abs(signed(duty_cycle)) > "00000000") else
-                           (others => '0');
-      pwm <= '1' when (increment < period_high_check) else '0';
+      period_high_check := (others => '0') when (duty_cycle = "00000000") else
+                           to_unsigned(to_integer(abs(signed(duty_cycle))) * 390, period_high_check'length);
+      pwm <= '1' when (to_integer(increment) < to_integer(period_high_check)) else '0';
     end if;
   end process PULSE_WIDTH_MODULATION;
 
-  current_state <= next_state;
+  current_state <= next_state when rising_edge(mclk);
 
   UPDATE_STATE:
-  process (mclk, reset) is
+  process (all) is
   begin
     if (reset = '1' or reset_handler = '1') then
       reset_handler <= '1' when (current_state = forward) else '0';
       next_state <= forward_idle when (current_state = forward) else reverse_idle;
-    elsif rising_edge(mclk) then
-        -- Default value
-        next_state <= current_state;
-        case current_state is
-          when reverse_idle =>
-            next_state <= reverse when (signed(duty_cycle) < "00000000") else forward_idle;
-          when reverse =>
-            next_state <= current_state when (signed(duty_cycle) < "00000000") else reverse_idle;
-          when forward_idle =>
-            next_state <= forward when (signed(duty_cycle) > "00000000") else reverse_idle;
-          when forward =>
-            next_state <= current_state when (signed(duty_cycle) > "00000000") else forward_idle;
-        end case;
+    else
+      -- Default value
+      next_state <= current_state;
+      case current_state is
+        when reverse_idle =>
+          next_state <= reverse when (to_integer(signed(duty_cycle)) < 0) else forward_idle;
+        when reverse =>
+          next_state <= current_state when (to_integer(signed(duty_cycle)) < 0) else reverse_idle;
+        when forward_idle =>
+          next_state <= forward when (to_integer(signed(duty_cycle)) > 0) else reverse_idle;
+        when forward =>
+          next_state <= current_state when (to_integer(signed(duty_cycle)) > 0) else forward_idle;
+      end case;
     end if;
   end process UPDATE_STATE;
 
   STATE_OUTPUT:
-  process (mclk, reset) is
+  process (all) is
     variable direction : std_logic;
   begin
-    if (reset = '1') then
+    if (reset = '1' or reset_handler = '1') then
       en <= '0';
-    elsif rising_edge(mclk) then
-      
+      direction := dir;
+      dir <= direction when (current_state = forward) else '0';
+    else
       -- Default values
       direction := dir;
       dir <= direction;  -- Hinders short
