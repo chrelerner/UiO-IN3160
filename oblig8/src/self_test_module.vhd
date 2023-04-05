@@ -10,7 +10,7 @@ entity self_test_module is
   port (
          mclk        : in std_logic;
          reset       : in std_logic;
-	 duty_signal : out std_logic_vector(7 downto 0);
+	 duty_cycle : out std_logic_vector(7 downto 0);
          );
 end self_test_module;
 
@@ -65,7 +65,7 @@ begin
   end process UPDATING_SIGNAL;
 
   data <= ROM_DATA(to_integer(unsigned(address)));
-  duty_signal <= data_out;
+  duty_cycle <= data_out;
 
 end architecture rtl;
 
