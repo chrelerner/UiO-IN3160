@@ -1,3 +1,4 @@
+-- Self test system for oblig 8 task c.
 library ieee;
 use ieee.std_logic_1164.all;
 
@@ -14,13 +15,13 @@ architecture structural of self_test_system_upper is
 
   component self_test_module is
     generic (
-              addr_width : natural := 5; -- 32 data instances require 5 bit addresses,
-              data_width : natural := 8; -- 8 bit data. 
+              addr_width : natural := 5; -- 21 data instances require 5 bit addresses,
+              data_width : natural := 8 -- 8 bit data. 
               );
     port (
            mclk        : in std_logic;
            reset       : in std_logic;
-	   duty_signal : out std_logic_vector(7 downto 0);
+	   duty_cycle : out std_logic_vector(7 downto 0)
            );
   end component;
 
@@ -58,15 +59,16 @@ begin
                duty_cycle => duty_cycle
                );
 
-  COMPONENT_1 : pulse_width_modulator
+  COMPONENT_2 : pulse_width_modulator
     port map (
                mclk => mclk,
                reset => reset,
+               duty_cycle => duty_cycle,
                dir => dir,
                en => en
                );
 
-  COMPONENT_1 : output_synchronizer
+  COMPONENT_3 : output_synchronizer
     port map (
                mclk => mclk,
                reset => reset,

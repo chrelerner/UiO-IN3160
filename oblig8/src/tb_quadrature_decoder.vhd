@@ -4,7 +4,6 @@ use ieee.std_logic_1164.all;
 library work;
 use work.subprog_pck.all;
 
-
 entity tb_quadrature_decoder is
 end tb_quadrature_decoder;
 
