@@ -72,8 +72,7 @@ begin
   begin
     if (reset = '1' or reset_handler = '1') then
       en <= '0';
-      direction := dir;
-      dir <= direction when (current_state = forward) else '0';
+      dir <= '1' when (current_state = forward) else '0';  -- Hinders short
     else
       -- Default values
       direction := dir;
