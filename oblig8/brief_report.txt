@@ -1,0 +1,29 @@
+Task a: 
+
+I copied the functionality in my self_test_unit implementation from oblig6, but made the counter count to 300 000 000 for updating every 3 seconds. 
+I used a ROM file containing 32 random 8-bit values, ranging from -128 to 127, ending with 0.
+
+Task b:
+
+For the pulse-width modulation, I went with the safe 2kHz frequency described in the data sheet. I figured out that 2kHz requires a period that
+lasts 50 000 clock periods, and thus made a 16-bit counter that can go up to 49 999 from 0. To control how much of this period is high/low, I
+came up with the idea of comparing the counter to a value X derived from multiplying the absolute value of duty cycle with 320, maxing out at 49 920 when 
+the absolute value of duty cycle is 128. PWM is set to high only when the counter is lower than X, else it is set to low.
+I did have difficulties with type casting when implementing the pulse-width modulation and how to multiply numbers.
+Also, I originally called the file pwm_module.vhd, but some stubborn bugs with the questa text editor made me go over to the name described in the entity
+declaration of tb_pwm_module.vhd.
+
+Task c:
+
+I had no difficulties making the synchronizing modules. In order to test the upper half of the entire system, I made a a testbench called tb_self_test_system_upper.vhd
+where I connected all the three upper modules. I didn't make a separate structural file self_test_system_upper.vhd because I wanted to look at all the signals used
+by the three modules. In order for this simulation to work properly, I had to speed up the updating of numbers in self_test_module.vhd.
+
+Task d:
+
+The quadrature decoder was very straightforward to implement. I made a very simple self testing testbench for this, where pos_inc, pos_dec, and err will be tested separately
+using procedures from a package subprog_pck.vhd.
+
+Task e:
+
+I implemented system.vhd by connecting all the related elements structurally. For seg7ctrl, I only used Di(3 downto 0).
