@@ -27,7 +27,7 @@ begin
   PULSE_WIDTH_MODULATION:
   process (mclk, reset) is
     variable increment : unsigned(15 downto 0);
-    variable period_high_check : unsigned(16 downto 0);
+    variable period_high_check : integer;
   begin
     if (reset = '1') then
       counter <= (others => '0');
@@ -35,10 +35,12 @@ begin
       increment := (others => '0') when (counter = d"49999") else counter + '1';
       counter <= increment;
 
-      -- Has a max value of 49 999, min value of 480, and absolute min value of 0.
-      period_high_check := (others => '0') when (duty_cycle = "00000000") else
-                           to_unsigned(to_integer(abs(signed(duty_cycle))) * 390, period_high_check'length);
-      pwm <= '1' when (to_integer(increment) < to_integer(period_high_check)) else '0';
+      -- Has a max value of 49 920, min value of 0.
+      period_high_check := 
+        128 * 390 when (duty_cycle = "10000000") else
+        to_integer(abs(signed(duty_cycle))) * 390;
+      
+      pwm <= '1' when (to_integer(increment) < period_high_check) else '0';
     end if;
   end process PULSE_WIDTH_MODULATION;
 

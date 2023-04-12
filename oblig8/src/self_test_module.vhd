@@ -6,9 +6,9 @@ use std.textio.all;
 
 entity self_test_module is
   generic (
-            addr_width : natural := 5; -- 21 data instances require 5 bit addresses,
+            addr_width : natural := 5; -- 32 data instances require 5 bit addresses,
             data_width : natural := 8; -- 8 bit data.
-            filename : string := "duty_cycles_file.txt"
+            filename : string := "ROM_content.txt"
             );
   port (
          mclk        : in std_logic;
@@ -44,6 +44,8 @@ architecture rtl of self_test_module is
 
 begin
 
+  -- Use d"812499" for simulation (128 numbers per second).
+  -- Use d"299999999" for synthesis (3 seconds per number).
   SECOND_TICK_GENERATOR:
   process (mclk, reset) is
     variable increment : unsigned(28 downto 0);
@@ -67,9 +69,10 @@ begin
       data <= (others => '0');
     elsif rising_edge(mclk) then
       increment := unsigned(address);
-      address <= std_logic_vector(increment) when ((second_tick = '1') and (increment = d"20")) else
-                 std_logic_vector(increment + '1') when (second_tick = '1') else
-                 std_logic_Vector(increment);
+      address <= 
+        std_logic_vector(increment) when ((second_tick = '1') and (increment = d"31")) else
+        std_logic_vector(increment + '1') when (second_tick = '1') else
+        std_logic_Vector(increment);
       data <= ROM_DATA(to_integer(unsigned(address)));
     end if;
   end process UPDATING_SIGNAL;

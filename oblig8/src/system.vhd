@@ -19,9 +19,9 @@ architecture structural of system is
 
   component self_test_module is
     generic (
-              addr_width : natural := 5; -- 21 data instances require 5 bit addresses,
+              addr_width : natural := 5; -- 32 data instances require 5 bit addresses,
               data_width : natural := 8; -- 8 bit data.
-              filename : string := "duty_cycles_file.txt"
+              filename : string := "ROM_content.txt"
               );
     port (
            mclk        : in std_logic;

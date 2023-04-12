@@ -37,30 +37,35 @@ begin
       when S_reset =>
         next_state <= S_init;
       when S_init =>
-        next_state <= S_0 when (AB = "00") else
-                      S_1 when (AB = "01") else
-                      S_2 when (AB = "11") else
-                      S_3 when (AB = "10");
+        next_state <= 
+          S_0 when (AB = "00") else
+          S_1 when (AB = "01") else
+          S_2 when (AB = "11") else
+          S_3 when (AB = "10");
       when S_0 =>
-        next_state <= S_0     when (AB = "00") else
-                      S_1     when (AB = "01") else
-                      S_reset when (AB = "11") else
-                      S_3     when (AB = "10");
+        next_state <= 
+          S_0     when (AB = "00") else
+          S_1     when (AB = "01") else
+          S_reset when (AB = "11") else
+          S_3     when (AB = "10");
       when S_1 =>
-        next_state <= S_0     when (AB = "00") else
-                      S_1     when (AB = "01") else
-                      S_2     when (AB = "11") else
-                      S_reset when (AB = "10");
+        next_state <=
+          S_0     when (AB = "00") else
+          S_1     when (AB = "01") else
+          S_2     when (AB = "11") else
+          S_reset when (AB = "10");
       when S_2 =>
-        next_state <= S_reset when (AB = "00") else
-                      S_1     when (AB = "01") else
-                      S_2     when (AB = "11") else
-                      S_3     when (AB = "10");
+        next_state <=
+          S_reset when (AB = "00") else
+          S_1     when (AB = "01") else
+          S_2     when (AB = "11") else
+          S_3     when (AB = "10");
       when S_3 =>
-        next_state <= S_0     when (AB = "00") else
-                      S_reset when (AB = "01") else
-                      S_2     when (AB = "11") else
-                      S_3     when (AB = "10");
+        next_state <=
+          S_0     when (AB = "00") else
+          S_reset when (AB = "01") else
+          S_2     when (AB = "11") else
+          S_3     when (AB = "10");
     end case;
   end process UPDATE_STATE;
 
