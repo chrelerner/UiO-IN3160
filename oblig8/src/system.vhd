@@ -111,6 +111,7 @@ architecture structural of system is
   signal err                : std_logic;  -- not used
   signal velocity           : signed(7 downto 0);
   signal d1, d0             : std_logic_vector(4 downto 0) := (others => '0');
+  signal velocity_abs       : signed(7 downto 0);
 
 begin
 
@@ -180,8 +181,9 @@ begin
                c       => c
                );
 
-  d1(3 downto 0) <= std_logic_vector(velocity(7 downto 4));
-  d0(3 downto 0) <= std_logic_vector(velocity(3 downto 0));
+  velocity_abs <= abs(velocity);
+  d1(3 downto 0) <= std_logic_vector(velocity_abs(7 downto 4));
+  d0(3 downto 0) <= std_logic_vector(velocity_abs(3 downto 0));
 
 end architecture structural;
 

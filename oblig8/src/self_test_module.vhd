@@ -44,8 +44,8 @@ architecture rtl of self_test_module is
 
 begin
 
-  -- Use d"812499" for simulation (128 numbers per second).
-  -- Use d"299999999" for synthesis (3 seconds per number).
+  -- Use d"812499" for simulation.
+  -- Use d"299999999" for synthesis.
   SECOND_TICK_GENERATOR:
   process (mclk, reset) is
     variable increment : unsigned(28 downto 0);
@@ -61,7 +61,7 @@ begin
   end process SECOND_TICK_GENERATOR;
 
   UPDATING_SIGNAL:
-  process (all) is
+  process (mclk, reset) is
     variable increment : unsigned(addr_width-1 downto 0);
   begin
     if (reset = '1') then
